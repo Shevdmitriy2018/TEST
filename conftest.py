@@ -69,24 +69,22 @@ def pytest_addoption(parser):
 
 
 @pytest.fixture(scope="function")
-def browser(request, logger):
-    user_language = (
-        request.param if hasattr(request, 'param')
-        else request.config.getoption("language") or "ru"
-    )
-    logger.info(f"🚀 Запускаем браузер с языком: {user_language}, в режиме инкогнито.")
+def browser(logger):
+    user_language = "ru"
 
-    options = Options()
+    options = webdriver.ChromeOptions()
     options.add_argument("--start-maximized")
     options.add_argument("--incognito")
-    options.add_argument("--headless") 
-    options.add_argument("--no-sandbox")  
-    options.add_argument("--disable-dev-shm-usage") 
+    options.add_argument("--headless")  # если нужен режим без GUI
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument(f"--lang={user_language}")
     options.add_experimental_option('prefs', {'intl.accept_languages': user_language})
 
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
     driver.delete_all_cookies()
+    logger.info(f"🚀 Запускаем браузер с языком: {user_language}, в режиме инкогнито.")
     logger.info("Очищены все cookies в браузере")
 
     yield driver
