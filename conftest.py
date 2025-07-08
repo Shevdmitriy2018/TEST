@@ -75,10 +75,14 @@ def browser(request, logger):
     else request.config.getoption("language") or "ru"
 )
     logger.info(f"🚀 Запускаем браузер с языком: {user_language}, в режиме инкогнито.")
-    options = Options()
-    options.add_argument("--start-maximized")
-    options.add_argument("--incognito")
-    options.add_experimental_option('prefs', {'intl.accept_languages': user_language})
+   options = Options()
+   options.add_argument("--start-maximized")
+   options.add_argument("--incognito")
+   options.add_argument("--headless") 
+   options.add_argument("--no-sandbox")  
+   options.add_argument("--disable-dev-shm-usage") 
+   options.add_experimental_option('prefs', {'intl.accept_languages': user_language})
+
 
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
