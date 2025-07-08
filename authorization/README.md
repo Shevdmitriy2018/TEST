@@ -21,6 +21,4 @@ pytest -v
 Позитивные и негативные тесты авторизации:
 pytest -v authorization/test_login_positive_and_negative.py
 
-Тесты авторизации по ссылкам:
-pytest -v authorization/test_autorisations_links.py
 
